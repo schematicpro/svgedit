@@ -6,12 +6,21 @@ class SPIntegration {
     this.editor = editor;
   }
 
-//return url param if exists
+//return url enity param if exists
   getUrlEntity() {
     const windowUrl = window.location.search;
     const params = new URLSearchParams(windowUrl);
     if (params.has("entity_id")) {
       return params.get("entity_id"); 
+    }
+    return null;
+  }
+
+  getUrlReturn() {
+    const windowUrl = window.location.search;
+    const params = new URLSearchParams(windowUrl);
+    if (params.has("returnUrl")) {
+      return params.get("returnUrl");
     }
     return null;
   }
@@ -24,12 +33,14 @@ class SPIntegration {
   async SPOpen () {
     try {
       //get entity_id from url parm
-      var entity_id = this.getUrlEntity()
-      if (entity_id === null) return;
+      var entity_id = this.getUrlEntity();
+      var returnUrl = this.getUrlReturn();
+      if (entity_id === null || returnUrl === null) return;
+      
 
       var svgContent = "";
       var SvgName = ""
-      await fetch(`https://localhost:44368/api/EntityByIdForSVGEditor/${entity_id}`)
+      await fetch(`https://${returnUrl}/api/EntityByIdForSVGEditor/${entity_id}`)
         .then((res) => res.json())
         .then((data) => {
           console.log(data);

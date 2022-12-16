@@ -235,7 +235,7 @@ export default {
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ entity_id: this.spintegration.getUrlEntity(), icon: b64Data })
             };
-            fetch('https://localhost:44368/api/SaveFromSVGEditor', requestOptions)
+            fetch(`https://${this.spintegration.getUrlReturn()}/api/SaveFromSVGEditor`, requestOptions)
               .then(response => response.text())//promise
               .then(status => {//promise result
                 if (JSON.parse(status) === 'Success') {

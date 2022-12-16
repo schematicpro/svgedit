@@ -1,10 +1,8 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src",
-    "\\src\\editor",
-    "\\src\\editor\\extensions",
-    "\\src\\editor\\extensions\\ext-opensave"
+    "\\src\\editor"
   ],
+  "SelectedNode": "\\src",
   "PreviewInSolutionExplorer": false
 }
