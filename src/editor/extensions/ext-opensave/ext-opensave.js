@@ -170,6 +170,9 @@ export default {
         }
       }
     }
+
+    
+
     const b64toBlob = (b64Data, contentType = '', sliceSize = 512) => {
       const byteCharacters = atob(b64Data)
       const byteArrays = []
@@ -223,17 +226,42 @@ export default {
               fileName: 'untitled.svg',
               extensions: ['.svg']
             }, handle, throwIfExistingHandleNotGood)
-          } else {
+            //save to SP
+          } else if (type === 'saveasSP') {
+            console.log("SAVE TO SP");
+            const requestOptions = {
+              method: 'Post',
+              crossorigin: true, 
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ entity_id: this.spintegration.getUrlEntity(), icon: b64Data })
+            };
+            fetch('https://localhost:44368/api/SaveFromSVGEditor', requestOptions)
+              .then(response => response.text())//promise
+              .then(status => {//promise result
+                if (JSON.parse(status) === 'Success') {
+                  const ok = seConfirm("Your changes have been saved to SP. Close this tab and return to SP and refresh to view your changes")
+                  if (ok === 'Cancel' || ok == 'Ok') {
+                    return
+                  }
+                }
+              })
+              .catch(err => console.log(err));
+
+          }
+          else {
             handle = await fileSave(blob, {
               fileName: svgEditor.title,
               extensions: ['.svg']
             })
           }
-          svgEditor.topPanel.updateTitle(handle.name)
-          svgCanvas.runExtensions('onSavedDocument', {
-            name: handle.name,
-            kind: handle.kind
-          })
+          if (type !== 'saveasSP') {//nothing to update
+            svgEditor.topPanel.updateTitle(handle.name)
+            svgCanvas.runExtensions('onSavedDocument', {
+              name: handle.name,
+              kind: handle.kind
+            })
+          }
+          
         } catch (err) {
           if (err.name !== 'AbortError') {
             return console.error(err)
@@ -242,28 +270,43 @@ export default {
       }
     }
 
+
+
     return {
       name: svgEditor.i18next.t(`${name}:name`),
       // The callback should be used to load the DOM with the appropriate UI items
-      callback () {
-        const buttonTemplate = `
-        <se-menu-item id="tool_clear" label="opensave.new_doc" shortcut="N" src="new.svg"></se-menu-item>`
-        svgCanvas.insertChildAtIndex($id('main_button'), buttonTemplate, 0)
-        const openButtonTemplate = '<se-menu-item id="tool_open" label="opensave.open_image_doc" src="open.svg"></se-menu-item>'
-        svgCanvas.insertChildAtIndex($id('main_button'), openButtonTemplate, 1)
-        const saveButtonTemplate = '<se-menu-item id="tool_save" label="opensave.save_doc" shortcut="S" src="saveImg.svg"></se-menu-item>'
-        svgCanvas.insertChildAtIndex($id('main_button'), saveButtonTemplate, 2)
-        const saveAsButtonTemplate = '<se-menu-item id="tool_save_as" label="opensave.save_as_doc" src="saveImg.svg"></se-menu-item>'
-        svgCanvas.insertChildAtIndex($id('main_button'), saveAsButtonTemplate, 3)
-        const importButtonTemplate = '<se-menu-item id="tool_import" label="tools.import_doc" src="importImg.svg"></se-menu-item>'
-        svgCanvas.insertChildAtIndex($id('main_button'), importButtonTemplate, 4)
+      callback() {
+        if (this.spintegration.getUrlEntity() !== null) {
+          const saveAsSPButtonTemplate = '<se-menu-item id="tool_save_as_SP" label="opensave.save_as_SP" src="saveImg.svg"></se-menu-item>'
+          svgCanvas.insertChildAtIndex($id('main_button'), saveAsSPButtonTemplate, 1)
+          const openButtonTemplate = '<se-menu-item id="tool_open" label="opensave.open_image_doc" src="open.svg"></se-menu-item>'
+          svgCanvas.insertChildAtIndex($id('main_button'), openButtonTemplate, 2)
 
-        // handler
-        $click($id('tool_clear'), clickClear.bind(this))
-        $click($id('tool_open'), clickOpen.bind(this))
-        $click($id('tool_save'), clickSave.bind(this, 'save'))
-        $click($id('tool_save_as'), clickSave.bind(this, 'saveas'))
-        $click($id('tool_import'), () => imgImport.click())
+          // handler
+          $click($id('tool_save_as_SP'), clickSave.bind(this, 'saveasSP'))
+          $click($id('tool_open'), clickOpen.bind(this))
+
+        } else {
+          const buttonTemplate = `<se-menu-item id="tool_clear" label="opensave.new_doc" shortcut="N" src="new.svg"></se-menu-item>`
+          svgCanvas.insertChildAtIndex($id('main_button'), buttonTemplate, 0)
+          const openButtonTemplate = '<se-menu-item id="tool_open" label="opensave.open_image_doc" src="open.svg"></se-menu-item>'
+          svgCanvas.insertChildAtIndex($id('main_button'), openButtonTemplate, 1)
+          const saveButtonTemplate = '<se-menu-item id="tool_save" label="opensave.save_doc" shortcut="S" src="saveImg.svg"></se-menu-item>'
+          svgCanvas.insertChildAtIndex($id('main_button'), saveButtonTemplate, 2)
+          const saveAsButtonTemplate = '<se-menu-item id="tool_save_as" label="opensave.save_as_doc" src="saveImg.svg"></se-menu-item>'
+          svgCanvas.insertChildAtIndex($id('main_button'), saveAsButtonTemplate, 3)
+          const importButtonTemplate = '<se-menu-item id="tool_import" label="tools.import_doc" src="importImg.svg"></se-menu-item>'
+          svgCanvas.insertChildAtIndex($id('main_button'), importButtonTemplate, 4)
+
+
+          // handler
+          $click($id('tool_clear'), clickClear.bind(this))
+          $click($id('tool_open'), clickOpen.bind(this))
+          $click($id('tool_save'), clickSave.bind(this, 'save'))
+          $click($id('tool_save_as'), clickSave.bind(this, 'saveas'))
+          $click($id('tool_import'), () => imgImport.click())
+        }
+        
       }
     }
   }

@@ -27,6 +27,7 @@ import BottomPanel from './panels/BottomPanel.js'
 import LayersPanel from './panels/LayersPanel.js'
 import MainMenu from './MainMenu.js'
 import { getParentsUntil } from '../common/util.js'
+import SPIntegration from './SpInit.js'
 
 const { $id, $click, decode64, blankPageObjectURL } = SvgCanvas
 
@@ -120,6 +121,8 @@ class Editor extends EditorStartup {
     this.topPanel = new TopPanel(this)
     this.layersPanel = new LayersPanel(this)
     this.mainMenu = new MainMenu(this)
+    this.spintegration = new SPIntegration(this);
+    
     // makes svgEditor accessible as a global variable
     window.svgEditor = this
   } // end Constructor
@@ -1070,6 +1073,7 @@ class Editor extends EditorStartup {
     return new Promise((resolve, reject) => {
       if (this.isReady) {
         resolve(cb())
+        this.spintegration.SPOpen();
         return
       }
       this.callbacks.push([cb, resolve, reject])
