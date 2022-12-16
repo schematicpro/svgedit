@@ -231,7 +231,7 @@ export default {
             console.log("SAVE TO SP");
             const requestOptions = {
               method: 'Post',
-              crossorigin: true, 
+              credentials: 'include',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ entity_id: this.spintegration.getUrlEntity(), icon: b64Data })
             };

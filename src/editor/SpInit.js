@@ -40,7 +40,10 @@ class SPIntegration {
 
       var svgContent = "";
       var SvgName = ""
-      await fetch(`https://${returnUrl}/api/EntityByIdForSVGEditor/${entity_id}`)
+      await fetch(`https://${returnUrl}/api/EntityByIdForSVGEditor/${entity_id}`, {
+        method: 'Get',
+        credentials: 'include'
+      })
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
