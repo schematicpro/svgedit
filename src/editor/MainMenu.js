@@ -249,13 +249,16 @@ class MainMenu {
   init () {
     // add Top panel
     const template = document.createElement('template')
-    template.innerHTML = `
+    template.innerHTML = `<div id="main_cont">
     <se-menu id="main_button" label="SVG-Edit" src="logo.svg" alt="logo">
         <se-menu-item id="tool_export" label="tools.export_img" src="export.svg"></se-menu-item>
         <se-menu-item id="tool_docprops" label="tools.docprops" shortcut="D" src="docprop.svg"></se-menu-item>
         <se-menu-item id="tool_editor_prefs" label="config.editor_prefs" src="editPref.svg"></se-menu-item>
         <se-menu-item id="tool_editor_homepage" label="tools.editor_homepage" src="logo.svg"></se-menu-item>
-    </se-menu>`
+    </se-menu>
+    <button id="SP_save_button" title="Save to SchematicPro">Save to SP</button>
+</div>`
+ 
     this.editor.$svgEditor.append(template.content.cloneNode(true))
 
     // register action to main menu entries

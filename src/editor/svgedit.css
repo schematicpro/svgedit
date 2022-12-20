@@ -18,7 +18,7 @@
 .svg_editor {
   display: grid;
   grid-template-rows: auto 15px 1fr 40px;
-  grid-template-columns: 40px 15px 50px 1fr 15px;
+  grid-template-columns: 90px 15px 50px 1fr 15px;
   grid-template-areas: 
     "main main   main top top"
     "left corner rulerX rulerX side"
@@ -193,8 +193,28 @@ hr {
 /* Main button
 —————————————————————————————*/
 
-#main_button {
+#main_cont {
   grid-area: main;
+  display: flex;
+  justify-content:space-between;
+  flex-direction: row;
+}
+#SP_save_button {
+  width: 90%;
+  height:37px;
+  padding: 1px;
+  margin: 1px 5px 5px 5px;
+  color: #fff;
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+#SP_save_button:hover {
+  cursor: pointer;
+  color: #fff;
+  background-color: #b52b27;
+  border-color: #dd6864;
+}
+#main_button {
   color: #fff;
   border-radius: 3px;
   padding-block: 2px;

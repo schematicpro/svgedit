@@ -284,6 +284,7 @@ export default {
 
           // handler
           $click($id('tool_save_as_SP'), clickSave.bind(this, 'saveasSP'))
+          $click($id('SP_save_button'), clickSave.bind(this, 'saveasSP'))
           $click($id('tool_open'), clickOpen.bind(this))
 
         } else {

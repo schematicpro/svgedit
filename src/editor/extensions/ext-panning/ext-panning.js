@@ -43,12 +43,13 @@ export default {
         // Add the button and its handler(s)
         const buttonTemplate = document.createElement('template')
         buttonTemplate.innerHTML = `
-        <se-button id="ext-panning" title="${btitle}" src="panning.svg"></se-button>
+        <se-button id="ext-panning" title="${btitle}" src="panning.svg" shortcut="H"></se-button>
         `
         insertAfter($id('tool_zoom'), buttonTemplate.content.cloneNode(true))
         $click($id('ext-panning'), () => {
           if (this.leftPanel.updateLeftPanel('ext-panning')) {
             svgCanvas.setMode('ext-panning')
+            this.workarea.style.cursor = this.panningIcon
           }
         })
       },

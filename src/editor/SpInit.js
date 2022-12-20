@@ -68,12 +68,13 @@ class SPIntegration {
           size: blob.size,
           type: blob.type
         })
+        this.editor.zoomChanged(window, 'canvas')
       } else {
         alert("Could not find Entity_id!  Please contact support")
         this.editor.leftPanel.clickSelect()
         this.editor.svgCanvas.clear()
         this.editor.updateCanvas(true)
-        this.editor.zoomImage()
+        this.editor.zoomChanged(window, 'canvas')
         this.editor.layersPanel.populateLayers()
         this.editor.topPanel.updateContextPanel()
         this.editor.topPanel.updateTitle('untitled.svg')

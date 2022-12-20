@@ -222,8 +222,8 @@ export class ToolButton extends HTMLElement {
         // only track keyboard shortcuts for the body containing the SVG-Editor
         if (e.target.nodeName !== 'BODY') return
         // normalize key
-        const key = `${(e.metaKey) ? 'meta+' : ''}${(e.ctrlKey) ? 'ctrl+' : ''}${e.key.toUpperCase()}`
-        if (shortcut !== key) return
+        const key = `${(e.metaKey) ? 'META+' : ''}${(e.ctrlKey) ? 'CTRL+' : ''}${e.key.toUpperCase()}`
+        if (shortcut.toUpperCase() !== key) return
         // launch the click event
         this.click()
         e.preventDefault()

@@ -128,8 +128,9 @@ class EditorStartup {
     this.canvMenu = $id('se-cmenu_canvas')
     this.exportWindow = null
     this.defaultImageURL = `${this.configObj.curConfig.imgPath}/logo.svg`
-    const zoomInIcon = 'crosshair'
-    const zoomOutIcon = 'crosshair'
+    this.zoomInIcon = 'zoom-in'
+    this.zoomOutIcon = 'zoom-out'
+    this.panningIcon = 'move'
     this.uiContext = 'toolbars'
 
     // For external openers
