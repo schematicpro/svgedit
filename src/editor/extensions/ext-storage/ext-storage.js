@@ -254,13 +254,21 @@ export default {
               )))
           // ...then show the storage prompt.
         ) {
-          const options = Boolean(storage)
+          /*const options = Boolean(storage)
           // Open select-with-checkbox dialog
           // From svg-editor.js
           svgEditor.storagePromptState = 'waiting'
           const $storageDialog = document.getElementById('se-storage-dialog')
           $storageDialog.setAttribute('dialog', 'open')
-          $storageDialog.setAttribute('storage', options)
+          $storageDialog.setAttribute('storage', options)*/
+
+          //manually set pref
+          document.cookie =
+            'svgeditstore=prefsAndContent; expires=Fri, 31 Dec 9999 23:59:59 GMT'
+          setupBeforeUnloadListener()
+          svgEditor.storagePromptState = 'closed'
+          svgEditor.updateCanvas(true)
+
         } else if (!noStorageOnLoad || forceStorage) {
           setupBeforeUnloadListener()
         }

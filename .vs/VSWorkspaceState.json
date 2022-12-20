@@ -1,8 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\src\\editor"
+    "\\src",
+    "\\src\\editor",
+    "\\src\\editor\\extensions",
+    "\\src\\editor\\extensions\\ext-storage"
   ],
-  "SelectedNode": "\\src",
+  "SelectedNode": "\\src\\editor\\extensions\\ext-storage\\ext-storage.js",
   "PreviewInSolutionExplorer": false
 }
