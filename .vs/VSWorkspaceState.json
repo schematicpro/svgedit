@@ -4,8 +4,8 @@
     "\\src",
     "\\src\\editor",
     "\\src\\editor\\extensions",
-    "\\src\\editor\\extensions\\ext-storage"
+    "\\src\\editor\\extensions\\ext-panning"
   ],
-  "SelectedNode": "\\src\\editor\\extensions\\ext-storage\\ext-storage.js",
+  "SelectedNode": "\\src\\editor\\svgedit.css",
   "PreviewInSolutionExplorer": false
 }

@@ -268,6 +268,7 @@ export default {
           setupBeforeUnloadListener()
           svgEditor.storagePromptState = 'closed'
           svgEditor.updateCanvas(true)
+          svgEditor.spintegration.SPOpen()
 
         } else if (!noStorageOnLoad || forceStorage) {
           setupBeforeUnloadListener()
