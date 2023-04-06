@@ -130,9 +130,16 @@ export const recalculateDimensions = (selected) => {
         mxs = []
       }
       if (xform.angle === 90) {
+        const existingMatrix = tlist.getItem(k).matrix
         tlist.removeItem(k)
         const newTransform = svgroot.createSVGTransform()
-        const newMatrix = svgroot.createSVGMatrix().rotate(-90).scale(-1, 1)
+        const newMatrix = svgroot.createSVGMatrix()
+        newMatrix.a = existingMatrix.a
+        newMatrix.b = existingMatrix.b
+        newMatrix.c = existingMatrix.c
+        newMatrix.d = existingMatrix.d
+        newMatrix.e = existingMatrix.e
+        newMatrix.f = existingMatrix.f
         newTransform.setMatrix(newMatrix)
         tlist.insertItemBefore(newTransform, k)
         console.log('Removed the rotate(90) transform and added a new transform at index', k)
