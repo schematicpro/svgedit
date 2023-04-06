@@ -76,6 +76,7 @@ export const recalculateDimensions = (selected) => {
   const svgroot = svgCanvas.getSvgRoot()
   const dataStorage = svgCanvas.getDataStorage()
   const tlist = selected.transform?.baseVal
+
   // remove any unnecessary transforms
   if (tlist?.numberOfItems > 0) {
     let k = tlist.numberOfItems
@@ -128,14 +129,15 @@ export const recalculateDimensions = (selected) => {
       } else if (mxs.length) {
         mxs = []
       }
+      if (xform.angle === 90) {
+        tlist.removeItem(k)
+        const newTransform = svgroot.createSVGTransform()
+        const newMatrix = svgroot.createSVGMatrix().rotate(-90).scale(-1, 1)
+        newTransform.setMatrix(newMatrix)
+        tlist.insertItemBefore(newTransform, k)
+        console.log('Removed the rotate(90) transform and added a new transform at index', k)
+      }
     }
-    if (mxs.length === 2) {
-      const mNew = svgroot.createSVGTransformFromMatrix(matrixMultiply(mxs[1][0], mxs[0][0]))
-      tlist.removeItem(mxs[0][1])
-      tlist.removeItem(mxs[1][1])
-      tlist.insertItemBefore(mNew, mxs[1][1])
-    }
-
     // combine matrix + translate
     k = tlist.numberOfItems
     if (k >= 2 && tlist.getItem(k - 2).type === 1 && tlist.getItem(k - 1).type === 2) {
