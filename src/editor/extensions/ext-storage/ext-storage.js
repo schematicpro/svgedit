@@ -265,13 +265,19 @@ export default {
           //manually set pref
           document.cookie =
             'svgeditstore=prefsAndContent; expires=Fri, 31 Dec 9999 23:59:59 GMT'
-          setupBeforeUnloadListener()
+          // setupBeforeUnloadListener()
+          if (svgEditor.storage) {
+            svgEditor.storage.clear();
+          }
           svgEditor.storagePromptState = 'closed'
           svgEditor.updateCanvas(true)
           svgEditor.spintegration.SPOpen()
 
         } else if (!noStorageOnLoad || forceStorage) {
-          setupBeforeUnloadListener()
+          //setupBeforeUnloadListener()
+          if (svgEditor.storage) {
+            svgEditor.storage.clear();
+          }
         }
       }
     }
