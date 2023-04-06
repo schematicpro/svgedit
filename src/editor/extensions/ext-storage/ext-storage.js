@@ -278,6 +278,9 @@ export default {
           if (svgEditor.storage) {
             svgEditor.storage.clear();
           }
+          svgEditor.storagePromptState = 'closed'
+          svgEditor.updateCanvas(true)
+          svgEditor.spintegration.SPOpen()
         }
       }
     }
