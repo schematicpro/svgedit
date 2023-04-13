@@ -209,7 +209,51 @@ export const remapElement = (selected, changes, m) => {
           sweepFlag: seg.sweepFlag
         }
       }
+      function removeObjectsWithSameType (arr) {
+        const lastSeen = {}
+        const toRemove = []
+        arr.forEach((item, index) => {
+          const { type } = item
+          if (lastSeen[type] !== undefined && type === 10) {
+            if (lastSeen[type] !== undefined) {
+              toRemove.push(index)
+            }
+            lastSeen[type] = index
+          }
+          lastSeen[type] = index
+        })
+        for (let i = toRemove.length - 1; i >= 0; i--) {
+          const rCheck = arr.filter(x => x.type === 10 && x.r1 === arr[toRemove[i]].r1 && x.r2 === arr[toRemove[i]].r2)
+          if (rCheck.length > 1) {
+            // find max X from rCheck array of objects
+            const maxX = rCheck.reduce((max, obj) => {
+              if (obj.x > max) {
+                return obj.x
+              } else {
+                return max
+              }
+            }, -Infinity)
+            const maxY = rCheck.reduce((max, obj) => {
+              if (obj.y > max) {
+                return obj.y
+              } else {
+                return max
+              }
+            }, -Infinity)
 
+            arr = arr.map(update => {
+              if (update.type === 10) {
+                update.x = maxX
+                update.y = maxY
+              }
+              return update
+            })
+            arr.splice(toRemove[i], 1)
+          }
+        }
+        return arr
+      }
+      changes.d = removeObjectsWithSameType(changes.d)
       len = changes.d.length
       const firstseg = changes.d[0]
       let currentpt
@@ -235,8 +279,8 @@ export const remapElement = (selected, changes, m) => {
           seg.y1 = pt1.y
           seg.x2 = pt2.x
           seg.y2 = pt2.y
-          seg.r1 = scalew(seg.r1)
-          seg.r2 = scaleh(seg.r2)
+          seg.r1 = m.a === 0 ? seg.r1 : scalew(seg.r1)
+          seg.r2 = m.d === 0 ? seg.r2 : scaleh(seg.r2)
         } else { // relative
           seg.x = scalew(seg.x)
           seg.y = scaleh(seg.y)

@@ -907,6 +907,10 @@ export const pathActionsMethod = (function () {
             pts.splice(pts.length, 0, pt.x, pt.y)
           }
         })
+        if (seg.r1 !== undefined && seg.r2 !== undefined) {
+          const pt = transformPoint(seg.r1, seg.r2, m)
+          pts.splice(pts.length, 0, pt.x, pt.y)
+        }
         svgCanvas.replacePathSeg(type, i, pts, pth)
       }
 
