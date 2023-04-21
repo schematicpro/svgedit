@@ -1,15 +1,11 @@
 {
   "ExpandedNodes": [
     "",
-    "\\coverage",
-    "\\cypress\\plugins",
-    "\\packages",
-    "\\packages\\svgcanvas",
     "\\src",
     "\\src\\editor",
     "\\src\\editor\\extensions",
-    "\\src\\editor\\extensions\\ext-storage"
+    "\\src\\editor\\extensions\\ext-panning"
   ],
-  "SelectedNode": "\\packages\\svgcanvas\\math.js",
+  "SelectedNode": "\\src\\editor\\svgedit.css",
   "PreviewInSolutionExplorer": false
 }

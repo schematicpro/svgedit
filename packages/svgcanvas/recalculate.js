@@ -76,14 +76,6 @@ export const recalculateDimensions = (selected) => {
   const svgroot = svgCanvas.getSvgRoot()
   const dataStorage = svgCanvas.getDataStorage()
   const tlist = selected.transform?.baseVal
-  if (tlist) {
-    const filteredList = Array.from(tlist).filter(obj => obj.type !== 1)
-    const typeCount = Array.from(tlist).filter(obj => obj.type === 1)
-    if (typeCount.length > 1) {
-      tlist.clear()
-      filteredList.forEach(obj => tlist.appendItem(obj))
-    }
-  }
 
   // remove any unnecessary transforms
   if (tlist?.numberOfItems > 0) {

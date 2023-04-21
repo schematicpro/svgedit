@@ -288,13 +288,6 @@ export const replacePathSegMethod = function (type, index, pts, elem) {
   const pathFuncs = svgCanvas.getPathFuncs()
   const func = 'createSVGPathSeg' + pathFuncs[type]
   const seg = pth[func](...pts)
-  if (seg.pathSegType === 10) { // Check if path segment type is an elliptical arc segment
-    seg._angle = seg._angle || 0
-    seg._largeArcFlag = seg._largeArcFlag || 0
-    seg._r1 = seg._r1 || 0
-    seg._r2 = seg._r2 || 0
-    seg._sweepFlag = seg._sweepFlag || 0
-  }
 
   pth.pathSegList.replaceItem(seg, index)
 }
