@@ -131,9 +131,12 @@ export const recalculateDimensions = (selected) => {
     }
     if (mxs.length === 2) {
       const mNew = svgroot.createSVGTransformFromMatrix(matrixMultiply(mxs[1][0], mxs[0][0]))
-      tlist.removeItem(mxs[0][1])
-      tlist.removeItem(mxs[1][1])
-      tlist.insertItemBefore(mNew, mxs[1][1])
+      const rotationTransfromSet = mxs.filter(x => x[0].b === 1 && x[0].c === 1)
+      if (rotationTransfromSet.length === 0) {
+        tlist.removeItem(mxs[0][1])
+        tlist.removeItem(mxs[1][1])
+        tlist.insertItemBefore(mNew, mxs[1][1])
+      }
     }
 
     // combine matrix + translate
@@ -594,7 +597,16 @@ export const recalculateDimensions = (selected) => {
           const rm = xform.matrix
           oldcenter.y = (s * rm.e + rm.f) / 2
           oldcenter.x = (rm.e - s * rm.f) / 2
-          tlist.removeItem(i)
+
+          let type2Check = false
+          for (let i = 0; i < tlist.numberOfItems; ++i) {
+            if (tlist.getItem(i).type === 2) { type2Check = true }
+            if (tlist.getItem(i).matrix.b === 1 && tlist.getItem(i).matrix.c === -1 && angle === 90) { type2Check = true }
+            if (tlist.getItem(i).matrix.b === -1 && tlist.getItem(i).matrix.c === 1 && angle === -90) { type2Check = true }
+          }
+          if (!type2Check) {
+            tlist.removeItem(i)
+          }
           break
         }
       }
@@ -702,7 +714,7 @@ export const recalculateDimensions = (selected) => {
       // (this function has zero work to do for a rotate())
     } else {
       // operation = 4; // rotation
-      if (angle) {
+      if (angle && angle !== 90 && angle !== -90) {
         const newRot = svgroot.createSVGTransform()
         newRot.setRotate(angle, newcenter.x, newcenter.y)
 
@@ -712,12 +724,11 @@ export const recalculateDimensions = (selected) => {
           tlist.appendItem(newRot)
         }
       }
-      if (tlist.numberOfItems === 0) {
+      if (tlist.numberOfItems === 0 && angle !== 90 && angle !== -90) {
         selected.removeAttribute('transform')
       }
       return null
     }
-
     // if it was a translate or resize, we need to remap the element and absorb the xform
     if (operation === 1 || operation === 2 || operation === 3) {
       remapElement(selected, changes, m)
@@ -725,7 +736,7 @@ export const recalculateDimensions = (selected) => {
 
     // if it was a translate, put back the rotate at the new center
     if (operation === 2) {
-      if (angle) {
+      if (angle && angle !== 90 && angle !== -90) {
         if (!hasMatrixTransform(tlist)) {
           newcenter = {
             x: oldcenter.x + m.e,
