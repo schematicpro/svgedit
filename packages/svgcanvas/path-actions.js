@@ -449,7 +449,8 @@ export const pathActionsMethod = (function () {
               path.elem.setAttribute('d', origD + newD)
               newpath.parentNode.removeChild(newpath)
               if (path.matrix) {
-                svgCanvas.recalcRotatedPath()
+                // not working...
+                // svgCanvas.recalcRotatedPath()
               }
               pathActionsMethod.toEditMode(path.elem)
               path.selectPt()
@@ -779,7 +780,8 @@ export const pathActionsMethod = (function () {
 
       if (path.matrix) {
         // Rotated, so may need to re-calculate the center
-        svgCanvas.recalcRotatedPath()
+        // not working..
+        // svgCanvas.recalcRotatedPath()
       }
 
       if (selPath) {
