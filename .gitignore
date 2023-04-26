@@ -19,3 +19,4 @@ instrumented
 dist
 *.sqlite
 *.vsidx
+.vs/svgedit/v17/.wsuo
