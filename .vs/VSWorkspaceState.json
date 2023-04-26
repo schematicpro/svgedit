@@ -1,11 +1,14 @@
 {
   "ExpandedNodes": [
     "",
+    "\\coverage",
+    "\\packages",
+    "\\packages\\svgcanvas",
     "\\src",
     "\\src\\editor",
     "\\src\\editor\\extensions",
-    "\\src\\editor\\extensions\\ext-panning"
+    "\\src\\editor\\extensions\\ext-opensave"
   ],
-  "SelectedNode": "\\src\\editor\\svgedit.css",
+  "SelectedNode": "\\packages\\svgcanvas",
   "PreviewInSolutionExplorer": false
 }
