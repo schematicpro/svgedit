@@ -637,7 +637,6 @@ export const recalculateDimensions = (selected) => {
         }
       }
     }
-
     // first, if it was a scale of a non-skewed element, then the second-last
     // transform will be the [S]
     // if we had [M][T][S][T] we want to extract the matrix equivalent of
@@ -680,6 +679,7 @@ export const recalculateDimensions = (selected) => {
     } else if (N === 1 && tlist.getItem(0).type === 1 && !angle) {
       // Remap all point-based elements
       m = transformListToTransform(tlist).matrix
+      const oldStrokeWidth = parseFloat(selected.getAttribute('stroke-width'))
       switch (selected.tagName) {
         case 'line':
           changes = {
@@ -705,6 +705,17 @@ export const recalculateDimensions = (selected) => {
         case 'path':
           changes.d = selected.getAttribute('d')
           operation = 1
+          // Check if stroke width is set and transform below t.list.clear()
+          if (oldStrokeWidth) {
+            // Get the current transformation matrix of the path
+            const ctm = transformListToTransform(tlist).matrix
+            // Calculate the new stroke width based on the scaling factor of the transform
+            const swScaleFactor = Math.sqrt((ctm.a * ctm.a) + (ctm.b * ctm.b))
+            // get new stroke width
+            const newStrokeWidth = oldStrokeWidth * swScaleFactor
+            // Set the new stroke width on the path element
+            selected.setAttribute('stroke-width', newStrokeWidth)
+          }
           tlist.clear()
           break
         default:
