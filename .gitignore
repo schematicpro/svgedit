@@ -18,3 +18,4 @@ instrumented
 .idea
 dist
 *.sqlite
+*.vsidx
