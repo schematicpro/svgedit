@@ -19,3 +19,4 @@ instrumented
 dist
 .vs/svgedit/FileContentIndex/e3d64004-0f74-4939-b5b4-b7990bed8a14.vsidx
 .vs/svgedit/FileContentIndex/38fa479a-8245-4d39-a35b-2e44cc66cb68.vsidx
+*.vsidx
