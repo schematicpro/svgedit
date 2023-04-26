@@ -285,11 +285,13 @@ export const getControlPointsMethod = function (seg) {
 export const replacePathSegMethod = function (type, index, pts, elem) {
   const path = svgCanvas.getPathObj()
   const pth = elem || path.elem
-  const pathFuncs = svgCanvas.getPathFuncs()
-  const func = 'createSVGPathSeg' + pathFuncs[type]
-  const seg = pth[func](...pts)
+  // const pathFuncs = svgCanvas.getPathFuncs()
+  // const func = 'createSVGPathSeg' + pathFuncs[type]
+  // const seg = pth[func](...pts)
 
-  pth.pathSegList.replaceItem(seg, index)
+  // pth.pathSegList.replaceItem(seg, index)
+  pth.pathSegList.getItem(index).x = pts[0]
+  pth.pathSegList.getItem(index).y = pts[1]
 }
 /**
 * @function module:path.getSegSelector
