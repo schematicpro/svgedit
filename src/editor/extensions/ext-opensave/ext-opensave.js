@@ -164,6 +164,7 @@ export default {
           size: blob.size,
           type: blob.type
         })
+        svgEditor.zoomChanged(window, 'canvas')
       } catch (err) {
         if (err.name !== 'AbortError') {
           return console.error(err)
