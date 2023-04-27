@@ -146,8 +146,8 @@ export default {
      */
     const clickOpen = async function () {
       // ask user before clearing an unsaved SVG
-      const response = await svgEditor.openPrep()
-      if (response === 'Cancel') { return }
+      // const response = await svgEditor.openPrep()
+      // if (response === 'Cancel') { return }
       svgCanvas.clear()
       try {
         const blob = await fileOpen({
