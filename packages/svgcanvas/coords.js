@@ -45,7 +45,7 @@ export const init = (canvas) => {
  * @name module:coords.remapElement
  * @type {module:path.EditorContext#remapElement}
 */
-export const remapElement = (selected, changes, m) => {
+export const remapElement = (selected, changes, m, operation) => {
   const remap = (x, y) => transformPoint(x, y, m)
   const scalew = (w) => m.a * w
   const scaleh = (h) => m.d * h
@@ -256,6 +256,7 @@ export const remapElement = (selected, changes, m) => {
       let dstr = ''
       changes.d.forEach((seg) => {
         const { type } = seg
+        let arcSweep
         dstr += pathMap[type]
         switch (type) {
           case 13: // relative horizontal line (h)
@@ -285,8 +286,12 @@ export const remapElement = (selected, changes, m) => {
             break
           case 11: // relative elliptical arc (a)
           case 10: // absolute elliptical arc (A)
+            arcSweep = Number(seg.sweepFlag)
+            if (operation === 3) {
+              arcSweep === 0 ? arcSweep = 1 : arcSweep = 0 // operation = 3 means flip sweepFlag
+            }
             dstr += seg.r1 + ',' + seg.r2 + ' ' + seg.angle + ' ' + Number(seg.largeArcFlag) +
-              ' ' + Number(seg.sweepFlag) + ' ' + seg.x + ',' + seg.y + ' '
+              ' ' + arcSweep + ' ' + seg.x + ',' + seg.y + ' '
             break
           case 17: // relative smooth cubic (s)
           case 16: // absolute smooth cubic (S)

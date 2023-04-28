@@ -700,6 +700,10 @@ export const recalculateDimensions = (selected) => {
       }
       // if it was a rotation, put the rotate back and return without a command
       // (this function has zero work to do for a rotate())
+    } else if (N === 2 && (tlist.getItem(0).type === 1 || tlist.getItem(0).type === 3) && (tlist.getItem(1).type === 1 || tlist.getItem(1).type === 3)) {
+      operation = 3 // scale
+      m = transformListToTransform(tlist).matrix
+      tlist.clear()
     } else {
       // operation = 4; // rotation
       if (angle) {
@@ -720,7 +724,7 @@ export const recalculateDimensions = (selected) => {
 
     // if it was a translate or resize, we need to remap the element and absorb the xform
     if (operation === 1 || operation === 2 || operation === 3) {
-      remapElement(selected, changes, m)
+      remapElement(selected, changes, m, operation)
     } // if we are remapping
 
     // if it was a translate, put back the rotate at the new center
@@ -753,7 +757,7 @@ export const recalculateDimensions = (selected) => {
               x: Number(child.getAttribute('x')) || 0,
               y: Number(child.getAttribute('y')) || 0
             }
-            remapElement(child, tspanChanges, m)
+            remapElement(child, tspanChanges, m, operation)
           }
         }
       }
@@ -772,7 +776,7 @@ export const recalculateDimensions = (selected) => {
       const mInv = matrix.inverse()
       const extrat = matrixMultiply(mInv, rnewInv, rold, matrix)
 
-      remapElement(selected, changes, extrat)
+      remapElement(selected, changes, extrat, operation)
       if (angle) {
         if (tlist.numberOfItems) {
           tlist.insertItemBefore(rnew, 0)
