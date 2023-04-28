@@ -49,6 +49,8 @@ export const remapElement = (selected, changes, m) => {
   const remap = (x, y) => transformPoint(x, y, m)
   const scalew = (w) => m.a * w
   const scaleh = (h) => m.d * h
+  const scaleRx = (rx, ry) => Math.abs(rx * m.a * Math.cos(m.c) + ry * m.c * Math.sin(m.c))
+  const scaleRy = (rx, ry) => Math.abs(rx * m.b * Math.sin(m.c) + ry * m.d * Math.cos(m.c))
   const doSnapping = svgCanvas.getGridSnapping() && selected.parentNode.parentNode.localName === 'svg'
   const finishUp = () => {
     if (doSnapping) {
@@ -227,6 +229,8 @@ export const remapElement = (selected, changes, m) => {
           const thisx = (seg.x !== undefined) ? seg.x : currentpt.x // for V commands
           const thisy = (seg.y !== undefined) ? seg.y : currentpt.y // for H commands
           const pt = remap(thisx, thisy)
+          const rx = seg.r1
+          const ry = seg.r2
           const pt1 = remap(seg.x1, seg.y1)
           const pt2 = remap(seg.x2, seg.y2)
           seg.x = pt.x
@@ -235,8 +239,8 @@ export const remapElement = (selected, changes, m) => {
           seg.y1 = pt1.y
           seg.x2 = pt2.x
           seg.y2 = pt2.y
-          seg.r1 = scalew(seg.r1)
-          seg.r2 = scaleh(seg.r2)
+          seg.r1 = scaleRx(rx, ry)
+          seg.r2 = scaleRy(rx, ry)
         } else { // relative
           seg.x = scalew(seg.x)
           seg.y = scaleh(seg.y)
