@@ -420,7 +420,7 @@ export const recalculateDimensions = (selected) => {
               } else {
                 childTlist.appendItem(newxlate)
               }
-              batchCmd.addSubCommand(recalculateDimensions(child))
+              // batchCmd.addSubCommand(recalculateDimensions(child))
               // If any <use> have this group as a parent and are
               // referencing this child, then impose a reverse translate on it
               // so that when it won't get double-translated
