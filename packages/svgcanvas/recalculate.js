@@ -124,7 +124,12 @@ export const recalculateDimensions = (selected) => {
     while (k--) {
       const xform = tlist.getItem(k)
       if (xform.type === 1) {
-        mxs.push([xform.matrix, k])
+        // do not combine as the transforms may be a rotate or matrix used to rotate the arc, if elliptical arc type = 10
+        if (selected?._pathSegList?._list.filter(x => x.pathSegType === 10).length > 0) {
+          mxs = []
+        } else {
+          mxs.push([xform.matrix, k])
+        }
       } else if (mxs.length) {
         mxs = []
       }
