@@ -235,10 +235,10 @@ export const remapElement = (selected, changes, m) => {
           const pt2 = remap(seg.x2, seg.y2)
           seg.x = pt.x
           seg.y = pt.y
-          seg.x1 = pt1.x
-          seg.y1 = pt1.y
-          seg.x2 = pt2.x
-          seg.y2 = pt2.y
+          seg.x1 = isNaN(pt1.x) ? undefined : pt1.x
+          seg.y1 = isNaN(pt1.y) ? undefined : pt1.y
+          seg.x2 = isNaN(pt2.x) ? undefined : pt2.x
+          seg.y2 = isNaN(pt2.y) ? undefined : pt2.y
           seg.r1 = scaleRx(rx, ry)
           seg.r2 = scaleRy(rx, ry)
         } else { // relative
