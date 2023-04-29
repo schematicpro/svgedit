@@ -76,6 +76,8 @@ export const recalculateDimensions = (selected) => {
   const svgroot = svgCanvas.getSvgRoot()
   const dataStorage = svgCanvas.getDataStorage()
   const tlist = selected.transform?.baseVal
+  // check if path has arc segments, type = 10... need to handle angle and matrix operations differently
+  const arcPath = selected?._pathSegList?._list.filter(x => x.pathSegType === 10).length > 0
   // remove any unnecessary transforms
   if (tlist?.numberOfItems > 0) {
     let k = tlist.numberOfItems
@@ -124,8 +126,8 @@ export const recalculateDimensions = (selected) => {
     while (k--) {
       const xform = tlist.getItem(k)
       if (xform.type === 1) {
-        // do not combine as the transforms may be a rotate or matrix used to rotate the arc, if elliptical arc type = 10
-        if (selected?._pathSegList?._list.filter(x => x.pathSegType === 10).length > 0) {
+        // do not combine as the transforms may be a rotate or matrix used to rotate the arc
+        if (arcPath) {
           mxs = []
         } else {
           mxs.push([xform.matrix, k])
@@ -710,10 +712,18 @@ export const recalculateDimensions = (selected) => {
       m = transformListToTransform(tlist).matrix
       tlist.clear()
     } else {
-      // operation = 4; // rotation
+      // check for stray matrix
+      let endRecalc = true
+      if (N === 1 && tlist.getItem(0).type === 1) {
+        operation = 1 // matrix
+        m = transformListToTransform(tlist).matrix
+        tlist.clear()
+        endRecalc = false
+      }
+
       if (angle) {
         const newRot = svgroot.createSVGTransform()
-        newRot.setRotate(angle, newcenter.x, newcenter.y)
+        newRot.setRotate(angle, 0, 0)
 
         if (tlist.numberOfItems) {
           tlist.insertItemBefore(newRot, 0)
@@ -724,11 +734,13 @@ export const recalculateDimensions = (selected) => {
       if (tlist.numberOfItems === 0) {
         selected.removeAttribute('transform')
       }
-      return null
+      if (endRecalc) {
+        return null
+      }
     }
 
     // if it was a translate or resize, we need to remap the element and absorb the xform
-    if (operation === 1 || operation === 2 || operation === 3) {
+    if (operation === 1 || operation === 2 || operation === 3 || operation === 4) {
       remapElement(selected, changes, m, operation)
     } // if we are remapping
 
